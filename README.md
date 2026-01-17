@@ -21,13 +21,6 @@ A clean, minimal, and battery-friendly personal link hub that showcases my portf
 
 ---
 
-## 📸 Preview
-
-> Add screenshots here if you want  
-> (Dark mode / Light mode)
-
----
-
 ## 🛠️ Tech Stack
 
 - **HTML**
