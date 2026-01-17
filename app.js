@@ -10,15 +10,18 @@ const featuredData = {
   tagline: "A peaceful new tab for focus"
 };
 
+// ==========================
+// LINK DATA WITH OPTIONAL STATS
+// ==========================
 const linkData = [
-  { name:"Portfolio", url:"https://geanpaulo.com", icon:"assets/icons/portfolio.svg", color:"#181717", description:"Check out my projects and work" },
-  { name:"Facebook", url:"https://facebook.com/geanpaulofrancois", icon:"assets/icons/facebook.svg", color:"#0866FF", description:"Connect on Facebook" },
-  { name:"Instagram", url:"https://instagram.com/geanpau.lo", icon:"assets/icons/instagram.svg", color:"#FF0069", description:"Follow me on Instagram" },
-  { name:"Threads", url:"https://www.threads.net/@geanpau.lo", icon:"assets/icons/threads.svg", color:"#000000", description:"Join the conversation" },
-  { name:"WhatsApp", url:"https://wa.me/639202652736", icon:"assets/icons/whatsapp.svg", color:"#25D366", description:"Chat with me on WhatsApp" },
-  { name:"GitHub", url:"https://github.com/geanpaulo19", icon:"assets/icons/github.svg", color:"#181717", description:"Open-source projects & code" },
-  { name:"LinkedIn", url:"https://linkedin.com/in/gean-paulo-paguirigan-b391182aa", icon:"assets/icons/linkedin.svg", color:"#0077B5", description:"Connect on LinkedIn" },
-  { name:"X", url:"https://x.com/geanpaulo_", icon:"assets/icons/x.svg", color:"#000000", description:"Follow me on X" }
+  { name:"Portfolio", url:"https://geanpaulo.com", icon:"assets/icons/portfolio.svg", color:"#181717", description:"Check out my projects and work", stats: null },
+  { name:"Facebook", url:"https://facebook.com/geanpaulofrancois", icon:"assets/icons/facebook.svg", color:"#0866FF", description:"Connect on Facebook", stats: "👥 4.5k" },
+  { name:"Instagram", url:"https://instagram.com/geanpau.lo", icon:"assets/icons/instagram.svg", color:"#FF0069", description:"Follow me on Instagram", stats: "👥 644" },
+  { name:"Threads", url:"https://www.threads.net/@geanpau.lo", icon:"assets/icons/threads.svg", color:"#000000", description:"Join the conversation", stats: "👥 200" },
+  { name:"WhatsApp", url:"https://wa.me/639202652736", icon:"assets/icons/whatsapp.svg", color:"#25D366", description:"Chat with me on WhatsApp", stats: null },
+  { name:"GitHub", url:"https://github.com/geanpaulo19", icon:"assets/icons/github.svg", color:"#181717", description:"Open-source projects & code", stats: "💻 3" },
+  { name:"LinkedIn", url:"https://linkedin.com/in/gean-paulo-paguirigan-b391182aa", icon:"assets/icons/linkedin.svg", color:"#0077B5", description:"Connect on LinkedIn", stats: null },
+  { name:"X", url:"https://x.com/geanpaulo_", icon:"assets/icons/x.svg", color:"#000000", description:"Follow me on X", stats: "👥 5k" }
 ];
 
 // ==========================
@@ -38,7 +41,6 @@ if (featuredContainer && featuredData) {
   fetch(featuredData.icon)
     .then(r => r.text())
     .then(svg => {
-      // Apply color if no fill
       if (!/<svg[^>]*fill=/.test(svg)) {
         svg = svg.replace(
           /<svg /,
@@ -52,7 +54,7 @@ if (featuredContainer && featuredData) {
       }
 
       card.innerHTML = `
-        <div class="featured-inner-unique">
+        <div class="featured-inner-unique featured-inner-centered">
           <div class="featured-icon-unique">${svg}</div>
           <div class="featured-text-unique">
             <span class="featured-pill-unique">Featured</span>
@@ -65,7 +67,7 @@ if (featuredContainer && featuredData) {
     })
     .catch(() => {
       card.innerHTML = `
-        <div class="featured-inner-unique">
+        <div class="featured-inner-unique featured-inner-centered">
           <div class="featured-text-unique">
             <span class="featured-pill-unique">Featured</span>
             <span class="featured-title-unique">${featuredData.name}</span>
@@ -80,7 +82,7 @@ if (featuredContainer && featuredData) {
 }
 
 // ==========================
-// LINK CARDS
+// LINK CARDS WITH STATS
 // ==========================
 const linksContainer = document.getElementById("links");
 
@@ -99,19 +101,28 @@ function createLinkCard(link) {
       } else {
         colored = svg.replace(/<svg /, `<svg width="36" height="36" style="display:block;margin:0 auto;" `);
       }
+
       const iconClass = link.name === "Portfolio" ? "portfolio-icon" : "";
-      card.innerHTML = `<div class="link-icon ${iconClass}">${colored}</div>
-                        <div class="link-text">
-                          <span class="link-title">${link.name}</span>
-                          <span class="link-desc">${link.description}</span>
-                        </div>`;
+
+      // Place stats outside of .link-text
+      card.innerHTML = `
+        <div class="link-icon ${iconClass}">${colored}</div>
+        <div class="link-text">
+          <span class="link-title">${link.name}</span>
+          <span class="link-desc">${link.description}</span>
+        </div>
+        ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
+      `;
     })
     .catch(() => {
-      card.innerHTML = `<div class="link-icon" style="font-size:36px;color:${link.color}">•</div>
-                        <div class="link-text">
-                          <span class="link-title">${link.name}</span>
-                          <span class="link-desc">${link.description}</span>
-                        </div>`;
+      card.innerHTML = `
+        <div class="link-icon" style="font-size:36px;color:${link.color}">•</div>
+        <div class="link-text">
+          <span class="link-title">${link.name}</span>
+          <span class="link-desc">${link.description}</span>
+        </div>
+        ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
+      `;
     });
 
   linksContainer.appendChild(card);
@@ -147,7 +158,7 @@ function updatePortfolioIcon() {
 }
 
 // ==========================
-// DYNAMIC GREETING
+// DYNAMIC GREETING (NO TYPING ANIMATION)
 // ==========================
 const greetingEl = document.getElementById("greeting");
 
@@ -156,23 +167,25 @@ function updateGreeting() {
   let greeting = "Hello!";
   let glow = "";
 
-  if(hour >= 5 && hour < 11){ greeting="🌅 Good morning!"; glow="rgba(255,200,100,0.15)"; }
-  else if(hour >= 11 && hour < 17){ greeting="☀️ Good afternoon!"; glow="rgba(255,255,255,0.1)"; }
-  else{ greeting="🌙 Good evening!"; glow="rgba(100,200,255,0.15)"; }
+  if(hour >= 5 && hour < 11){ 
+    greeting = "🌅 Good morning!"; 
+    glow = "rgba(255,200,100,0.15)"; 
+  }
+  else if(hour >= 11 && hour < 17){ 
+    greeting = "☀️ Good afternoon!"; 
+    glow = "rgba(255,255,255,0.1)"; 
+  }
+  else{ 
+    greeting = "🌙 Good evening!"; 
+    glow = "rgba(100,200,255,0.15)"; 
+  }
 
   greetingEl.style.setProperty("--dynamic-glow", glow);
-  typeGreeting(greeting);
+  greetingEl.textContent = greeting; // instant update
 }
 
-function typeGreeting(text){
-  greetingEl.textContent = "";
-  let i = 0;
-  const interval = setInterval(()=>{
-    greetingEl.textContent += text.charAt(i);
-    i++;
-    if(i >= text.length) clearInterval(interval);
-  }, 100);
-}
-
+// Initial update
 updateGreeting();
+
+// Refresh every minute
 setInterval(updateGreeting, 60000);
