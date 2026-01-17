@@ -327,6 +327,31 @@ footer img.cat-icon {
 }
 
 /* ==========================
+   THEME CAT TOGGLE
+========================== */
+/* Initially hide dark mode cat */
+.cat-dark { display: none; }
+.cat-light { display: block; }
+
+/* Light mode: show blackcat, hide orangecat */
+body.light .cat-light { display: block; }
+body.light .cat-dark { display: none; }
+
+/* Dark mode: show orangecat, hide blackcat */
+body:not(.light) .cat-light { display: none; }
+body:not(.light) .cat-dark { display: block; }
+
+/* Optional: make cursor pointer for clickable cat */
+footer a img {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+footer a img:hover {
+  transform: scale(1.1);
+}
+
+/* ==========================
    RESPONSIVE
 ========================== */
 @media(max-width:480px){
@@ -346,12 +371,3 @@ body::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:4p
 body::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.3);}
 body.light::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.3);}
 *{scrollbar-width:thin;scrollbar-color:var(--scrollbar-thumb) var(--scrollbar-track);}
-
-/* ==========================
-   THEME CAT TOGGLE
-========================== */
-.cat-light { display: none; }
-.cat-dark { display: block; }
-
-body.light .cat-light { display: block; }
-body.light .cat-dark { display: none; }
