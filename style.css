@@ -295,11 +295,11 @@ body.light .link-stats {
 footer {
   margin-top: 2.5rem;
   font-size: 0.85rem;
-  opacity: 0.6;
   color: var(--text-desc);
   text-align: center;
   line-height: 1.4;
   transition: all 0.3s ease;
+  /* removed opacity so images are not muted */
 }
 
 footer a {
@@ -315,7 +315,15 @@ footer a:hover {
 footer p {
   display: inline-flex;
   align-items: center;
+  justify-content: center; /* centers content horizontally */
   gap: 4px; /* small spacing between text and flag */
+  opacity: 0.6; /* only the text is slightly muted */
+}
+
+footer img.cat-icon {
+  width: 24px;      /* or any size you prefer */
+  height: auto;
+  opacity: 1;        /* full opacity for images */
 }
 
 /* ==========================
@@ -338,3 +346,12 @@ body::-webkit-scrollbar-thumb{background:var(--scrollbar-thumb);border-radius:4p
 body::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.3);}
 body.light::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,0.3);}
 *{scrollbar-width:thin;scrollbar-color:var(--scrollbar-thumb) var(--scrollbar-track);}
+
+/* ==========================
+   THEME CAT TOGGLE
+========================== */
+.cat-light { display: none; }
+.cat-dark { display: block; }
+
+body.light .cat-light { display: block; }
+body.light .cat-dark { display: none; }
