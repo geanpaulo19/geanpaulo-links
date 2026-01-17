@@ -7,6 +7,34 @@ const linkData = [
     description: "Check out my projects and work"
   },
   {
+    name: "Facebook",
+    url: "https://facebook.com/geanpaulofrancois",
+    icon: "assets/icons/facebook.svg",
+    color: "#0866FF",
+    description: "Connect on Facebook"
+  },
+  {
+    name: "Instagram",
+    url: "https://instagram.com/geanpau.lo",
+    icon: "assets/icons/instagram.svg",
+    color: "#FF0069",
+    description: "Follow me on Instagram"
+  },
+  {
+    name: "Threads",
+    url: "https://www.threads.net/@geanpau.lo",
+    icon: "assets/icons/threads.svg",
+    color: "#000000",
+    description: "Join the conversation"
+  },
+  {
+    name: "WhatsApp",
+    url: "https://wa.me/639202652736",
+    icon: "assets/icons/whatsapp.svg",
+    color: "#25D366",
+    description: "Chat with me on WhatsApp"
+  },
+  {
     name: "GitHub",
     url: "https://github.com/geanpaulo19",
     icon: "assets/icons/github.svg",
@@ -26,34 +54,6 @@ const linkData = [
     icon: "assets/icons/x.svg",
     color: "#000000",
     description: "Follow me on X"
-  },
-  {
-    name: "Threads",
-    url: "https://www.threads.net/@geanpau.lo",
-    icon: "assets/icons/threads.svg",
-    color: "#000000",
-    description: "Join the conversation"
-  },
-  {
-    name: "Instagram",
-    url: "https://instagram.com/geanpau.lo",
-    icon: "assets/icons/instagram.svg",
-    color: "#FF0069",
-    description: "Follow me on Instagram"
-  },
-  {
-    name: "Facebook",
-    url: "https://facebook.com/geanpaulofrancois",
-    icon: "assets/icons/facebook.svg",
-    color: "#0866FF",
-    description: "Connect on Facebook"
-  },
-  {
-    name: "WhatsApp",
-    url: "https://wa.me/639202652736",
-    icon: "assets/icons/whatsapp.svg",
-    color: "#25D366",
-    description: "Chat with me on WhatsApp"
   }
 ];
 
