@@ -14,7 +14,7 @@ const featuredData = {
 // LINK DATA WITH OPTIONAL STATS
 // ==========================
 const linkData = [
-  { name:"Portfolio", url:"https://geanpaulo.com", icon:"assets/icons/portfolio.svg", color:"#181717", description:"Check out my projects and work", stats: null },
+  { name:"Website/Portfolio", url:"https://geanpaulo.com", icon:"assets/icons/portfolio.svg", color:"#181717", description:"Check out my projects and work", stats: null },
   { name:"Facebook", url:"https://facebook.com/geanpaulofrancois", icon:"assets/icons/facebook.svg", color:"#0866FF", description:"Connect on Facebook", stats: "👥 4.5k" },
   { name:"Instagram", url:"https://instagram.com/geanpau.lo", icon:"assets/icons/instagram.svg", color:"#FF0069", description:"Follow me on Instagram", stats: "👥 644" },
   { name:"Threads", url:"https://www.threads.net/@geanpau.lo", icon:"assets/icons/threads.svg", color:"#000000", description:"Join the conversation", stats: "👥 200" },
