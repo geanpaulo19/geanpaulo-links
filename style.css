@@ -171,6 +171,7 @@ body.light .greeting-pill {
 .link-card {
   display:flex;
   align-items:center;
+  justify-content: space-between;  /* stats will be at far right */
   gap:1rem;
   backdrop-filter: blur(12px);
   background: var(--card-bg);
@@ -190,9 +191,39 @@ body.light .greeting-pill {
 }
 
 .link-icon svg { width:36px; height:36px; transition: all 0.3s ease; }
-.link-text { display:flex; flex-direction:column; text-align:left; }
+
+.link-text {
+  display:flex;
+  flex-direction:column;
+  text-align:left;
+  flex:1;                       /* take remaining space */
+}
+
 .link-title { font-weight:600; font-size:1.15rem; }
 .link-desc { font-size:0.85rem; color: var(--text-desc); margin-top:2px; }
+
+/* ==========================
+   LINK STATS PILL (FAR RIGHT)
+========================== */
+.link-stats {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight:500;
+  color: var(--fg);
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;               /* don’t shrink */
+  align-self: center;            /* vertical center */
+}
+
+body.light .link-stats {
+  background: rgba(0,0,0,0.08);
+  color: var(--fg);
+}
 
 /* ==========================
    FEATURED CARD UNIQUE (SOFT GREEN & CENTERED)
@@ -274,9 +305,29 @@ body.light .greeting-pill {
    FOOTER
 ========================== */
 footer {
-  margin-top:2rem;
-  font-size:0.85rem;
-  opacity:0.6;
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  color: var(--text-desc);
+  text-align: center;
+  line-height: 1.4;
+  transition: all 0.3s ease;
+}
+
+footer a {
+  color: var(--fg);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer p {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* small spacing between text and flag */
 }
 
 /* ==========================
