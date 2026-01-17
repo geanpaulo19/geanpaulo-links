@@ -104,7 +104,7 @@ function createLinkCard(link) {
 
       const iconClass = link.name === "Portfolio" ? "portfolio-icon" : "";
 
-      // Place stats outside of .link-text
+      // Place stats at far right of card
       card.innerHTML = `
         <div class="link-icon ${iconClass}">${colored}</div>
         <div class="link-text">
@@ -113,19 +113,33 @@ function createLinkCard(link) {
         </div>
         ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
       `;
+
+      // Immediately update Portfolio icon if applicable
+      if(link.name === "Portfolio") updatePortfolioIcon();
     })
     .catch(() => {
+      const iconClass = link.name === "Portfolio" ? "portfolio-icon" : "";
       card.innerHTML = `
-        <div class="link-icon" style="font-size:36px;color:${link.color}">•</div>
+        <div class="link-icon ${iconClass}" style="font-size:36px;color:${link.color}">•</div>
         <div class="link-text">
           <span class="link-title">${link.name}</span>
           <span class="link-desc">${link.description}</span>
         </div>
         ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
       `;
+      if(link.name === "Portfolio") updatePortfolioIcon();
     });
 
   linksContainer.appendChild(card);
+}
+
+// Theme toggle already calls this:
+function updatePortfolioIcon() {
+  const icon = document.querySelector('.portfolio-icon svg');
+  if(icon){
+    icon.style.transition = "filter 0.3s ease";
+    icon.style.filter = document.body.classList.contains('light') ? 'invert(1) brightness(1.2)' : 'none';
+  }
 }
 
 linkData.forEach(createLinkCard);
