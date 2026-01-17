@@ -42,15 +42,9 @@ if (featuredContainer && featuredData) {
     .then(r => r.text())
     .then(svg => {
       if (!/<svg[^>]*fill=/.test(svg)) {
-        svg = svg.replace(
-          /<svg /,
-          `<svg fill="${featuredData.color}" width="56" height="56" `
-        );
+        svg = svg.replace(/<svg /, `<svg fill="${featuredData.color}" width="56" height="56" `);
       } else {
-        svg = svg.replace(
-          /<svg /,
-          `<svg width="56" height="56" `
-        );
+        svg = svg.replace(/<svg /, `<svg width="56" height="56" `);
       }
 
       card.innerHTML = `
@@ -96,15 +90,14 @@ function createLinkCard(link) {
     .then(r => r.text())
     .then(svg => {
       let colored = svg;
-      if(!/<svg[^>]*fill=/.test(svg)){
+      if (!/<svg[^>]*fill=/.test(svg)) {
         colored = svg.replace(/<svg /, `<svg fill="${link.color}" width="36" height="36" style="display:block;margin:0 auto;" `);
       } else {
         colored = svg.replace(/<svg /, `<svg width="36" height="36" style="display:block;margin:0 auto;" `);
       }
 
-      const iconClass = link.name === "Portfolio" ? "portfolio-icon" : "";
+      const iconClass = link.name === "Website & Portfolio" ? "portfolio-icon" : "";
 
-      // Place stats at far right of card
       card.innerHTML = `
         <div class="link-icon ${iconClass}">${colored}</div>
         <div class="link-text">
@@ -114,11 +107,11 @@ function createLinkCard(link) {
         ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
       `;
 
-      // Immediately update Portfolio icon if applicable
-      if(link.name === "Portfolio") updatePortfolioIcon();
+      // Only update Portfolio icon
+      if (link.name === "Website & Portfolio") updatePortfolioIcon();
     })
     .catch(() => {
-      const iconClass = link.name === "Portfolio" ? "portfolio-icon" : "";
+      const iconClass = link.name === "Website & Portfolio" ? "portfolio-icon" : "";
       card.innerHTML = `
         <div class="link-icon ${iconClass}" style="font-size:36px;color:${link.color}">•</div>
         <div class="link-text">
@@ -127,22 +120,27 @@ function createLinkCard(link) {
         </div>
         ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
       `;
-      if(link.name === "Portfolio") updatePortfolioIcon();
+      if (link.name === "Website & Portfolio") updatePortfolioIcon();
     });
 
   linksContainer.appendChild(card);
 }
 
-// Theme toggle already calls this:
+// ==========================
+// PORTFOLIO ICON COLOR TOGGLE
+// ==========================
 function updatePortfolioIcon() {
-  const icon = document.querySelector('.portfolio-icon svg');
-  if(icon){
-    icon.style.transition = "filter 0.3s ease";
-    icon.style.filter = document.body.classList.contains('light') ? 'invert(1) brightness(1.2)' : 'none';
-  }
-}
+  const wrapper = document.querySelector('.portfolio-icon');
+  if (!wrapper) return;
 
-linkData.forEach(createLinkCard);
+  const svg = wrapper.querySelector('svg');
+  if (!svg) return;
+
+  svg.style.transition = "filter 0.3s ease";
+
+  // Light → black, Dark → original white
+  svg.style.filter = document.body.classList.contains('light') ? "invert(1)" : "invert(0)";
+}
 
 // ==========================
 // THEME TOGGLE
@@ -151,55 +149,38 @@ const themeToggleBtn = document.getElementById("theme-toggle");
 const savedTheme = localStorage.getItem("theme");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-if(savedTheme){
+// Set initial theme
+if (savedTheme) {
   document.body.classList.toggle("light", savedTheme === "light");
 } else {
   document.body.classList.toggle("light", !prefersDark);
 }
 
-themeToggleBtn.addEventListener("click", ()=>{
+// Apply Portfolio color on page load
+updatePortfolioIcon();
+
+// Toggle theme
+themeToggleBtn.addEventListener("click", () => {
   document.body.classList.toggle("light");
   localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
   updatePortfolioIcon();
 });
 
-function updatePortfolioIcon() {
-  const icon = document.querySelector('.portfolio-icon svg');
-  if(icon){
-    icon.style.transition = "filter 0.3s ease";
-    icon.style.filter = document.body.classList.contains('light') ? 'invert(1) brightness(1.2)' : 'none';
-  }
-}
-
 // ==========================
-// DYNAMIC GREETING (NO TYPING ANIMATION)
+// STATIC GREETING
 // ==========================
 const greetingEl = document.getElementById("greeting");
 
-function updateGreeting() {
-  const hour = new Date().getHours();
-  let greeting = "Hello!";
-  let glow = "";
+const hour = new Date().getHours();
+let greeting = "Hello!";
 
-  if(hour >= 5 && hour < 11){ 
-    greeting = "🌅 Good morning!"; 
-    glow = "rgba(255,200,100,0.15)"; 
-  }
-  else if(hour >= 11 && hour < 17){ 
-    greeting = "☀️ Good afternoon!"; 
-    glow = "rgba(255,255,255,0.1)"; 
-  }
-  else{ 
-    greeting = "🌙 Good evening!"; 
-    glow = "rgba(100,200,255,0.15)"; 
-  }
+if(hour >= 5 && hour < 11) greeting = "🌅 Good morning!";
+else if(hour >= 11 && hour < 17) greeting = "☀️ Good afternoon!";
+else greeting = "🌙 Good evening!";
 
-  greetingEl.style.setProperty("--dynamic-glow", glow);
-  greetingEl.textContent = greeting; // instant update
-}
+greetingEl.textContent = greeting;
 
-// Initial update
-updateGreeting();
-
-// Refresh every minute
-setInterval(updateGreeting, 60000);
+// ==========================
+// CREATE ALL LINK CARDS
+// ==========================
+linkData.forEach(createLinkCard);
