@@ -14,6 +14,13 @@ const linkData = [
     description: "Open-source projects & code"
   },
   {
+    name: "LinkedIn",
+    url: "https://linkedin.com/in/gean-paulo-paguirigan-b391182aa",
+    icon: "assets/icons/linkedin.svg",
+    color: "#0077B5",
+    description: "Connect on LinkedIn"
+  },
+  {
     name: "X",
     url: "https://x.com/geanpaulo_",
     icon: "assets/icons/x.svg",
