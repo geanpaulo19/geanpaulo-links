@@ -1,181 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meet Our Cats</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    /* ==========================
-       MODERN CAT CARD STYLING
-    ========================== */
-    body.cat-page {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 2rem;
-      background: var(--bg);
-      color: var(--fg);
-      text-align: center;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Meet Our Cats</title>
 
-    /* Glassmorphism card */
-    .cat-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.75rem;
-      max-width: 440px;
-      width: 90%;
-      padding: 3rem 2.5rem;
-      border-radius: 24px;
-      background: rgba(255,255,255,0.06);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.3);
-      transition: all 0.4s ease;
-    }
+<style>
+:root {
+  --bg: #121212;
+  --fg: #ffffff;
+  --card-bg: rgba(255,255,255,0.05);
+  --card-border: rgba(255,255,255,0.14);
+  --text-desc: rgba(255,255,255,0.7);
+}
 
-    .cat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-    }
+body.light {
+  --bg: #e0e0e0;
+  --fg: #121212;
+  --card-bg: rgba(0,0,0,0.05);
+  --card-border: rgba(0,0,0,0.1);
+  --text-desc: rgba(0,0,0,0.7);
+}
 
-    .cat-card h1 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin: 0;
-    }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  transition: background 0.3s ease, color 0.3s ease;
+}
 
-    .cat-photo-wrapper {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
+/* --------------------------
+   Cat Card
+--------------------------- */
+.cat-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
 
-    .cat-photo {
-      max-width: 300px;
-      width: 90%;
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: pointer;
-    }
+/* Header */
+.cat-header {
+  padding: 1.5rem 1.5rem 1rem;
+  text-align: center;
+}
 
-    .cat-photo:hover {
-      transform: scale(1.05);
-      box-shadow: 0 14px 40px rgba(0,0,0,0.3);
-    }
+.cat-header h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+}
 
-    .cat-name {
-      font-weight: 700;
-      font-size: 1.45rem;
-      margin-top: 1rem;
-      color: var(--fg);
-    }
+/* Image */
+.cat-media {
+  padding: 0 1.5rem;
+}
 
-    p.cat-desc {
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: var(--text-desc);
-      margin-bottom: 1.75rem;
-    }
+.cat-media img {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+}
 
-    /* ==========================
-       MODERN DONATE BUTTONS
-    ========================== */
-    .donate-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      width: 100%;
-      max-width: 280px;
-    }
+.cat-media img:hover {
+  transform: scale(1.03);
+}
 
-    .donate-buttons a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      font-weight: 600;
-      font-size: 1rem;
-      padding: 0.85rem 1.5rem;
-      border-radius: 18px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      color: #fff;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-    }
+/* Body */
+.cat-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+  text-align: center;
+}
 
-    .donate-buttons a:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 30px rgba(0,0,0,0.3);
-    }
+.cat-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
 
-    /* Brand Colors */
-    .donate-paypal {
-      background: linear-gradient(90deg, #003087, #009cde);
-    }
-    .donate-wise {
-      background: linear-gradient(90deg, #00AFF0, #00D0FF);
-    }
+.cat-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-desc);
+}
 
-    .donate-buttons img {
-      height: 1.5rem;
-      width: auto;
-    }
+/* Actions */
+.cat-actions {
+  padding: 0 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
 
-    /* Responsive */
-    @media(max-width:480px){
-      .cat-card { padding: 2rem 1.5rem; gap: 1.25rem; }
-      .cat-photo { max-width: 220px; }
-      .cat-name { font-size: 1.25rem; }
-      p.cat-desc { font-size: 0.95rem; margin-bottom: 1.3rem; }
-      .donate-buttons a { font-size: 0.95rem; padding: 0.75rem 1.25rem; }
-    }
-  </style>
+.cat-actions a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.85rem 1rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+}
+
+.cat-actions a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.3);
+}
+
+.cat-actions img {
+  height: 1.25rem;
+}
+
+/* Brand Colors */
+.donate-paypal { background: linear-gradient(90deg, #003087, #009cde); }
+.donate-wise { background: linear-gradient(90deg, #00AFF0, #00D0FF); }
+
+/* Mobile tuning */
+@media (max-width: 480px) {
+  .cat-header,
+  .cat-body,
+  .cat-actions,
+  .cat-media { padding-left:1.25rem; padding-right:1.25rem; }
+
+  .cat-header h1 { font-size:1.45rem; }
+}
+</style>
 </head>
+
 <body class="cat-page">
 
-  <div class="cat-card">
+<div class="cat-card">
+
+  <div class="cat-header">
     <h1>Meet Our Beloved Cats 🐱</h1>
-
-    <a href="cat.html" class="cat-photo-wrapper">
-      <img src="assets/images/curiosity.jpg" alt="Curiosity" class="cat-photo cat-light">
-      <img src="assets/images/curiosity.jpg" alt="Curiosity" class="cat-photo cat-dark">
-      <div class="cat-name">Curiosity & Ming Ming</div>
-    </a>
-
-    <p class="cat-desc">Help us feed our beloved cats! Any support is appreciated ❤️</p>
-
-    <!-- Donate Buttons -->
-    <div class="donate-buttons">
-      <a href="https://www.paypal.me/geanpaulo" target="_blank" class="donate-paypal">
-        <img src="assets/icons/paypal.svg" alt="PayPal Icon"> Donate via PayPal
-      </a>
-      <a href="https://wise.com/pay/me/geanpaulop" target="_blank" class="donate-wise">
-        <img src="assets/icons/wise.svg" alt="Wise Icon"> Donate via Wise
-      </a>
-    </div>
   </div>
 
-  <script>
-    // ==========================
-    // THEME DETECTION
-    // ==========================
-    const savedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  <div class="cat-media">
+    <a href="cat.html">
+      <img src="assets/images/curiosity.jpg" alt="Curiosity & Ming Ming">
+    </a>
+  </div>
 
-    if(savedTheme){
-      document.body.classList.toggle("light", savedTheme === "light");
+  <div class="cat-body">
+    <div class="cat-name">Curiosity & Ming Ming</div>
+    <p class="cat-desc">
+      Help us feed our beloved cats! Any support is appreciated ❤️
+    </p>
+  </div>
+
+  <div class="cat-actions">
+    <a href="https://www.paypal.me/geanpaulo" target="_blank" class="donate-paypal">
+      <img src="assets/icons/paypal.svg" alt=""> Donate via PayPal
+    </a>
+    <a href="https://wise.com/pay/me/geanpaulop" target="_blank" class="donate-wise">
+      <img src="assets/icons/wise.svg" alt=""> Donate via Wise
+    </a>
+  </div>
+
+</div>
+
+<script>
+// =========================
+// THEME DETECTION & PERSISTENCE
+// =========================
+
+// Immediately apply saved theme before anything renders
+(function(){
+  const savedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  if(savedTheme === "light"){
+    document.body.classList.add("light");
+    document.body.classList.remove("dark");
+  } else if(savedTheme === "dark"){
+    document.body.classList.add("dark");
+    document.body.classList.remove("light");
+  } else {
+    if(prefersDark){
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
     } else {
-      document.body.classList.toggle("light", !prefersDark);
+      document.body.classList.add("light");
+      document.body.classList.remove("dark");
     }
-  </script>
+  }
+})();
+
+// Optional: theme toggle button for testing
+// Save theme so it persists across pages
+function toggleTheme(){
+  if(document.body.classList.contains("light")){
+    document.body.classList.remove("light");
+    document.body.classList.add("dark");
+    localStorage.setItem("theme","dark");
+  } else {
+    document.body.classList.remove("dark");
+    document.body.classList.add("light");
+    localStorage.setItem("theme","light");
+  }
+}
+</script>
+
 </body>
 </html>
