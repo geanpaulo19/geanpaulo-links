@@ -166,17 +166,43 @@ themeToggleBtn.addEventListener("click", () => {
 });
 
 // ==========================
-// STATIC GREETING
+// DYNAMIC GREETING PILL
 // ==========================
 const greetingEl = document.getElementById("greeting");
-const hour = new Date().getHours();
+const now = new Date();
+const hour = now.getHours();
+const day = now.getDay(); 
+
 let greeting = "Hello!";
+let subMessage = "";
 
-if(hour >= 5 && hour < 11) greeting = "🌅 Good morning!";
-else if(hour >= 11 && hour < 17) greeting = "☀️ Good afternoon!";
-else greeting = "🌙 Good evening!";
+// 1. Time-based logic
+if (hour >= 5 && hour < 12) {
+  greeting = "🌅 Good morning";
+} else if (hour >= 12 && hour < 17) {
+  greeting = "☀️ Good afternoon";
+} else if (hour >= 17 && hour < 22) {
+  greeting = "🌆 Good evening";
+} else {
+  greeting = "🌙 Night owl mode";
+}
 
-greetingEl.textContent = greeting;
+// 2. Weekend flair with Middot
+const isWeekend = (day === 6 || day === 0);
+if (isWeekend) {
+  // Using \u00B7 for a perfectly centered middle dot
+  subMessage = " \u00B7 Enjoy your weekend! ✨";
+}
+
+// 3. Set content and trigger subtle entrance
+greetingEl.textContent = `${greeting}${subMessage}`;
+
+// Apply a clean fade-in
+greetingEl.style.opacity = "0";
+setTimeout(() => {
+  greetingEl.style.transition = "opacity 0.8s ease";
+  greetingEl.style.opacity = "1";
+}, 50);
 
 // ==========================
 // CREATE ALL LINK CARDS
