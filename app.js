@@ -14,14 +14,14 @@ const featuredData = {
 // LINK DATA WITH OPTIONAL STATS
 // ==========================
 const linkData = [
-  { name:"Website & Portfolio", url:"https://geanpaulo.com", icon:"assets/icons/portfolio.svg", color:"#181717", description:"Check out my projects and work", stats: null },
+  { name:"Website & Portfolio", url:"https://geanpaulo.com", icon:"assets/icons/portfolio.svg", color:"#ffffff", description:"Check out my projects and work", stats: null },
   { name:"Facebook", url:"https://facebook.com/geanpaulofrancois", icon:"assets/icons/facebook.svg", color:"#0866FF", description:"Connect on Facebook", stats: "👥 4.5k" },
   { name:"Instagram", url:"https://instagram.com/geanpau.lo", icon:"assets/icons/instagram.svg", color:"#FF0069", description:"Follow me on Instagram", stats: "👥 644" },
-  { name:"Threads", url:"https://www.threads.net/@geanpau.lo", icon:"assets/icons/threads.svg", color:"#000000", description:"Join the conversation", stats: "👥 200" },
+  { name:"Threads", url:"https://www.threads.net/@geanpau.lo", icon:"assets/icons/threads.svg", color:"#ffffff", description:"Join the conversation", stats: "👥 200" },
   { name:"WhatsApp", url:"https://wa.me/639202652736", icon:"assets/icons/whatsapp.svg", color:"#25D366", description:"Chat with me on WhatsApp", stats: null },
-  { name:"GitHub", url:"https://github.com/geanpaulo19", icon:"assets/icons/github.svg", color:"#181717", description:"Open-source projects & code", stats: "💻 3" },
+  { name:"GitHub", url:"https://github.com/geanpaulo19", icon:"assets/icons/github.svg", color:"#ffffff", description:"Open-source projects & code", stats: "💻 3" },
   { name:"LinkedIn", url:"https://linkedin.com/in/gean-paulo-paguirigan-b391182aa", icon:"assets/icons/linkedin.svg", color:"#0077B5", description:"Connect on LinkedIn", stats: null },
-  { name:"X", url:"https://x.com/geanpaulo_", icon:"assets/icons/x.svg", color:"#000000", description:"Follow me on X", stats: "👥 5k" }
+  { name:"X", url:"https://x.com/geanpaulo_", icon:"assets/icons/x.svg", color:"#ffffff", description:"Follow me on X", stats: "👥 5k" }
 ];
 
 // ==========================
@@ -96,7 +96,9 @@ function createLinkCard(link) {
         colored = svg.replace(/<svg /, `<svg width="36" height="36" style="display:block;margin:0 auto;" `);
       }
 
-      const iconClass = link.name === "Website & Portfolio" ? "portfolio-icon" : "";
+      // Check if icon needs theme-based inversion
+      const invertTargets = ["Website & Portfolio", "Threads", "GitHub", "X"];
+      const iconClass = invertTargets.includes(link.name) ? "invert-icon" : "";
 
       card.innerHTML = `
         <div class="link-icon ${iconClass}">${colored}</div>
@@ -107,11 +109,11 @@ function createLinkCard(link) {
         ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
       `;
 
-      // Only update Portfolio icon
-      if (link.name === "Website & Portfolio") updatePortfolioIcon();
+      if (invertTargets.includes(link.name)) updateInvertedIcons();
     })
     .catch(() => {
-      const iconClass = link.name === "Website & Portfolio" ? "portfolio-icon" : "";
+      const invertTargets = ["Website & Portfolio", "Threads", "GitHub", "X"];
+      const iconClass = invertTargets.includes(link.name) ? "invert-icon" : "";
       card.innerHTML = `
         <div class="link-icon ${iconClass}" style="font-size:36px;color:${link.color}">•</div>
         <div class="link-text">
@@ -120,26 +122,25 @@ function createLinkCard(link) {
         </div>
         ${link.stats ? `<span class="link-stats">${link.stats}</span>` : ''}
       `;
-      if (link.name === "Website & Portfolio") updatePortfolioIcon();
+      if (invertTargets.includes(link.name)) updateInvertedIcons();
     });
 
   linksContainer.appendChild(card);
 }
 
 // ==========================
-// PORTFOLIO ICON COLOR TOGGLE
+// ICON COLOR TOGGLE (INVERSION)
 // ==========================
-function updatePortfolioIcon() {
-  const wrapper = document.querySelector('.portfolio-icon');
-  if (!wrapper) return;
+function updateInvertedIcons() {
+  const wrappers = document.querySelectorAll('.invert-icon');
+  wrappers.forEach(wrapper => {
+    const svg = wrapper.querySelector('svg');
+    if (!svg) return;
 
-  const svg = wrapper.querySelector('svg');
-  if (!svg) return;
-
-  svg.style.transition = "filter 0.3s ease";
-
-  // Light → black, Dark → original white
-  svg.style.filter = document.body.classList.contains('light') ? "invert(1)" : "invert(0)";
+    svg.style.transition = "filter 0.3s ease";
+    // Light mode: Invert white to black. Dark mode: Keep white.
+    svg.style.filter = document.body.classList.contains('light') ? "invert(1)" : "invert(0)";
+  });
 }
 
 // ==========================
@@ -149,28 +150,25 @@ const themeToggleBtn = document.getElementById("theme-toggle");
 const savedTheme = localStorage.getItem("theme");
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-// Set initial theme
 if (savedTheme) {
   document.body.classList.toggle("light", savedTheme === "light");
 } else {
   document.body.classList.toggle("light", !prefersDark);
 }
 
-// Apply Portfolio color on page load
-updatePortfolioIcon();
+// Apply inversion on page load
+updateInvertedIcons();
 
-// Toggle theme
 themeToggleBtn.addEventListener("click", () => {
   document.body.classList.toggle("light");
   localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
-  updatePortfolioIcon();
+  updateInvertedIcons();
 });
 
 // ==========================
 // STATIC GREETING
 // ==========================
 const greetingEl = document.getElementById("greeting");
-
 const hour = new Date().getHours();
 let greeting = "Hello!";
 
