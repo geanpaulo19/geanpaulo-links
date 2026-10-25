@@ -1,10 +1,23 @@
 /* ============================================================
    KINETIC LINKS - rendering + live data + interactions
-   Dark-only: no theme toggle, no icon inversion.
    ============================================================ */
 
 // ==========================
-// DATA
+// SITE CONFIG - one-place edits for the things that change
+// ==========================
+const AVAILABILITY = {
+  open: true,
+  available: 'Available for projects',
+  booked: 'Currently booked'
+};
+
+const CONTACT = {
+  email: 'geanpaulo@mail.com',
+  vcard: 'assets/gean-paulo.vcf'
+};
+
+// ==========================
+// FEATURED ITEM
 // ==========================
 const featuredData = {
   name: 'Zen New Tab',
@@ -20,6 +33,8 @@ const linkData = [
   { name: 'Instagram', url: 'https://instagram.com/geanpau.lo', icon: 'assets/icons/instagram.svg', color: '#FF0069', description: 'Follow me on Instagram', stat: '644' },
   { name: 'Threads', url: 'https://www.threads.net/@geanpau.lo', icon: 'assets/icons/threads.svg', color: 'var(--fg)', mono: true, description: 'Join the conversation', stat: '200' },
   { name: 'WhatsApp', url: 'https://wa.me/639202652736', icon: 'assets/icons/whatsapp.svg', color: '#25D366', description: 'Chat with me on WhatsApp', stat: null },
+  { name: 'Email', action: 'copy-email', icon: 'ph-envelope-simple', color: 'var(--fg)', description: CONTACT.email, stat: null, arrow: 'ph-copy' },
+  { name: 'Save my contact', action: 'download-vcard', icon: 'ph-user-circle-plus', color: 'var(--accent-text)', description: 'Add my details to your phone', stat: null, arrow: 'ph-download-simple' },
   { name: 'GitHub', url: 'https://github.com/geanpaulo19', icon: 'assets/icons/github.svg', color: 'var(--fg)', mono: true, description: 'Open-source projects & code', stat: '3 repos' },
   { name: 'LinkedIn', url: 'https://linkedin.com/in/gean-paulo-paguirigan-b391182aa', icon: 'assets/icons/linkedin.svg', color: '#0077B5', description: 'Connect on LinkedIn', stat: null },
   { name: 'X', url: 'https://x.com/geanpaulo_', icon: 'assets/icons/x.svg', color: 'var(--fg)', mono: true, description: 'Follow me on X', stat: '5K' }
@@ -47,6 +62,55 @@ function loadIcon(url, color, size, mono) {
       return out;
     })
     .catch(() => `<span style="width:${size}px;height:${size}px;border-radius:50%;background:${color};display:block"></span>`);
+}
+
+// Phosphor glyphs for the non-brand rows (email, save contact)
+function renderIcon(link, size) {
+  if (link.icon.startsWith('ph-')) {
+    return Promise.resolve(`<i class="ph ${link.icon}" aria-hidden="true"></i>`);
+  }
+  return loadIcon(link.icon, link.color, size, link.mono);
+}
+
+// ==========================
+// TOAST + CLIPBOARD
+// ==========================
+let toastEl = null;
+let toastTimer = 0;
+
+function showToast(message) {
+  if (!toastEl) {
+    toastEl = document.createElement('div');
+    toastEl.className = 'toast';
+    toastEl.setAttribute('role', 'status');
+    document.body.appendChild(toastEl);
+  }
+  toastEl.innerHTML = `<i class="ph ph-check-circle" aria-hidden="true"></i>${message}`;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2200);
+}
+
+function copyText(text) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    return navigator.clipboard.writeText(text);
+  }
+  // Older webviews: textarea + execCommand fallback
+  return new Promise((resolve, reject) => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand('copy') ? resolve() : reject(new Error('copy failed'));
+    } catch (err) {
+      reject(err);
+    } finally {
+      ta.remove();
+    }
+  });
 }
 
 // ==========================
@@ -81,31 +145,74 @@ if (featuredContainer) {
 
 // ==========================
 // LINK ROWS
+// Rows reveal as they enter the viewport; the arrow glyph
+// reflects the row's action.
 // ==========================
 const linksContainer = document.getElementById('links');
 
 linkData.forEach((link, i) => {
-  const row = document.createElement('a');
-  row.className = 'link-row spotlight rise';
-  row.style.setProperty('--d', `${0.5 + i * 0.06}s`);
-  row.href = link.url;
-  row.target = '_blank';
-  row.rel = 'noopener';
+  let row;
 
-  loadIcon(link.icon, link.color, 30, link.mono).then((svg) => {
+  if (link.action === 'copy-email') {
+    row = document.createElement('button');
+    row.type = 'button';
+    row.setAttribute('aria-label', `Copy email address ${CONTACT.email}`);
+    row.addEventListener('click', () => {
+      copyText(CONTACT.email)
+        .then(() => showToast('Email copied to clipboard'))
+        .catch(() => showToast(CONTACT.email));
+    });
+  } else if (link.action === 'download-vcard') {
+    row = document.createElement('a');
+    row.href = CONTACT.vcard;
+    row.download = 'gean-paulo.vcf';
+  } else {
+    row = document.createElement('a');
+    row.href = link.url;
+    row.target = '_blank';
+    row.rel = 'noopener';
+  }
+
+  row.className = 'link-row spotlight reveal';
+  row.style.setProperty('--rd', `${(i % 3) * 80}ms`);
+
+  const arrow = link.arrow || 'ph-arrow-up-right';
+  renderIcon(link, 30).then((icon) => {
     row.innerHTML = `
-      <span class="link-icon" style="color:${link.color}">${svg}</span>
+      <span class="link-icon" style="color:${link.color}">${icon}</span>
       <span class="link-text">
         <span class="link-title">${link.name}</span>
         <span class="link-desc">${link.description}</span>
       </span>
       ${link.stat ? `<span class="link-stat">${link.stat}</span>` : ''}
-      <i class="ph ph-arrow-up-right link-arrow" aria-hidden="true"></i>
+      <i class="ph ${arrow} link-arrow" aria-hidden="true"></i>
     `;
   });
 
   linksContainer.appendChild(row);
 });
+
+// ==========================
+// SCROLL REVEAL - rows and footer fade in on entry
+// ==========================
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+
+document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+// ==========================
+// AVAILABILITY - driven by the SITE CONFIG flag
+// ==========================
+document.getElementById('availability').textContent = AVAILABILITY.open
+  ? AVAILABILITY.available
+  : AVAILABILITY.booked;
+document.querySelector('.status-dot').classList.toggle('booked', !AVAILABILITY.open);
 
 // ==========================
 // GREETING - visitor's local time, like the portfolio hero

@@ -12,12 +12,31 @@ accent, choreographed entrances.
 - **Live status row**
   - Time-aware greeting, availability dot, live Manila clock, and Manila
     weather via Open-Meteo (keyless, fails silently)
+- **Contact rows**
+  - Email row copies the address with a toast; Save-my-contact downloads a
+    vCard (`assets/gean-paulo.vcf`)
 - **Featured project panel**
   - Highlighted card for the current featured work
 - **Spotlight link rows**
-  - Border ring that lights up around the cursor, lift-on-hover motion
+  - Border ring that lights up around the cursor, icon tilt and lift on
+    hover, fade-in as rows enter the viewport
 - **Cat page** (`cat.html`)
   - Meet Curiosity & Ming Ming, with PayPal / Wise support buttons
+
+## Editing content (no build step)
+
+Everything lives in `app.js` at the top:
+
+- `AVAILABILITY` - flip `open: true` to `false` to switch the status line
+  to "Currently booked" (dot goes muted)
+- `CONTACT` - email address and vCard path
+- `featuredData` - the featured card (name, link, icon, tagline)
+- `linkData` - the link rows in order; each entry has `name`, `icon`,
+  `color`, `description`, optional `stat`, and an `action` for the special
+  rows (`copy-email`, `download-vcard`)
+
+The vCard itself is a plain text file (`assets/gean-paulo.vcf`) you can
+edit directly.
 
 ## Tech Stack
 
