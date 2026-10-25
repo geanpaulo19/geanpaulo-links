@@ -15,26 +15,31 @@ const featuredData = {
 };
 
 const linkData = [
-  { name: 'Website & Portfolio', url: 'https://geanpaulo.com', icon: 'assets/icons/portfolio.svg', color: 'var(--fg)', description: 'Check out my projects and work', stat: null },
+  { name: 'Website & Portfolio', url: 'https://geanpaulo.com', icon: 'assets/icons/portfolio.svg', color: 'var(--fg)', mono: true, description: 'Check out my projects and work', stat: null },
   { name: 'Facebook', url: 'https://facebook.com/geanpaulofrancois', icon: 'assets/icons/facebook.svg', color: '#0866FF', description: 'Connect on Facebook', stat: '4.5K' },
   { name: 'Instagram', url: 'https://instagram.com/geanpau.lo', icon: 'assets/icons/instagram.svg', color: '#FF0069', description: 'Follow me on Instagram', stat: '644' },
-  { name: 'Threads', url: 'https://www.threads.net/@geanpau.lo', icon: 'assets/icons/threads.svg', color: 'var(--fg)', description: 'Join the conversation', stat: '200' },
+  { name: 'Threads', url: 'https://www.threads.net/@geanpau.lo', icon: 'assets/icons/threads.svg', color: 'var(--fg)', mono: true, description: 'Join the conversation', stat: '200' },
   { name: 'WhatsApp', url: 'https://wa.me/639202652736', icon: 'assets/icons/whatsapp.svg', color: '#25D366', description: 'Chat with me on WhatsApp', stat: null },
-  { name: 'GitHub', url: 'https://github.com/geanpaulo19', icon: 'assets/icons/github.svg', color: 'var(--fg)', description: 'Open-source projects & code', stat: '3 repos' },
+  { name: 'GitHub', url: 'https://github.com/geanpaulo19', icon: 'assets/icons/github.svg', color: 'var(--fg)', mono: true, description: 'Open-source projects & code', stat: '3 repos' },
   { name: 'LinkedIn', url: 'https://linkedin.com/in/gean-paulo-paguirigan-b391182aa', icon: 'assets/icons/linkedin.svg', color: '#0077B5', description: 'Connect on LinkedIn', stat: null },
-  { name: 'X', url: 'https://x.com/geanpaulo_', icon: 'assets/icons/x.svg', color: 'var(--fg)', description: 'Follow me on X', stat: '5K' }
+  { name: 'X', url: 'https://x.com/geanpaulo_', icon: 'assets/icons/x.svg', color: 'var(--fg)', mono: true, description: 'Follow me on X', stat: '5K' }
 ];
 
 // ==========================
 // SVG ICON LOADING
 // Inline the brand SVG and color it via currentColor so the
-// row controls tone through CSS.
+// row controls tone through CSS. Monochrome marks may ship
+// with baked white fills; those are rewritten to currentColor
+// so they invert with the theme (colored accent fills are kept).
 // ==========================
-function loadIcon(url, color, size) {
+function loadIcon(url, color, size, mono) {
   return fetch(url)
     .then((r) => r.text())
     .then((svg) => {
       let out = svg;
+      if (mono) {
+        out = out.replace(/fill="(white|#fff(?:fff)?)"/gi, 'fill="currentColor"');
+      }
       if (!/<svg[^>]*fill=/.test(out)) {
         out = out.replace(/<svg /, `<svg fill="currentColor" `);
       }
@@ -87,7 +92,7 @@ linkData.forEach((link, i) => {
   row.target = '_blank';
   row.rel = 'noopener';
 
-  loadIcon(link.icon, link.color, 30).then((svg) => {
+  loadIcon(link.icon, link.color, 30, link.mono).then((svg) => {
     row.innerHTML = `
       <span class="link-icon" style="color:${link.color}">${svg}</span>
       <span class="link-text">
