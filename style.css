@@ -554,6 +554,8 @@ body.light .featured-card:hover {
   justify-content: center;
   gap: 0.6rem;
   min-width: 240px;
+  max-width: calc(100vw - 2rem);
+  white-space: nowrap;
   background: var(--card);
   border: 1px solid var(--border);
   color: var(--fg);
