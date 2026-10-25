@@ -1,219 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Meet Our Cats</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Cats | Gean Paulo</title>
 
-<style>
-:root {
-  --bg: #121212;
-  --fg: #ffffff;
-  --card-bg: rgba(255,255,255,0.05);
-  --card-border: rgba(255,255,255,0.14);
-  --text-desc: rgba(255,255,255,0.7);
-}
+  <!-- Theme: dark default, follows the choice saved on the links page -->
+  <meta name="theme-color" content="#0e0e10">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Meet Curiosity and Ming Ming, the cats behind links.geanpaulo.com.">
 
-body.light {
-  --bg: #e0e0e0;
-  --fg: #121212;
-  --card-bg: rgba(0,0,0,0.05);
-  --card-border: rgba(0,0,0,0.1);
-  --text-desc: rgba(0,0,0,0.7);
-}
+  <link rel="icon" href="assets/images/gp5.svg" type="image/svg+xml">
 
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 2rem;
-  transition: background 0.3s ease, color 0.3s ease;
-}
+  <!-- Fonts + icons, same system as the links page -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 
-/* --------------------------
-   Cat Card
---------------------------- */
-.cat-card {
-  width: 100%;
-  max-width: 420px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 18px;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.35);
-  overflow: hidden;
-}
+  <style>
+    :root {
+      --bg: #0e0e10;
+      --fg: #f2f1ec;
+      --muted: #9b9a93;
+      --card: #16161a;
+      --border: rgba(242, 241, 236, 0.16);
+      --accent: #cdf553;
+      --accent-ink: #131311;
+      --accent-text: #cdf553;
+    }
 
-/* Header */
-.cat-header {
-  padding: 1.5rem 1.5rem 1rem;
-  text-align: center;
-}
+    body.light {
+      --bg: #f2f1ec;
+      --fg: #131311;
+      --muted: #6e6d66;
+      --card: #ffffff;
+      --border: rgba(19, 19, 17, 0.15);
+      --accent: #cdf553;
+      --accent-ink: #131311;
+      --accent-text: #4d7c0f;
+    }
 
-.cat-header h1 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin: 0;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-/* Image */
-.cat-media {
-  padding: 0 1.5rem;
-}
+    body {
+      color-scheme: dark;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding: 2.5rem 1.25rem;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
 
-.cat-media img {
-  width: 100%;
-  display: block;
-  border-radius: 14px;
-  cursor: pointer;
-  transition: transform 0.25s ease;
-}
+    body.light {
+      color-scheme: light;
+    }
 
-.cat-media img:hover {
-  transform: scale(1.03);
-}
+    ::selection {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
 
-/* Body */
-.cat-body {
-  padding: 1.25rem 1.5rem 1.5rem;
-  text-align: center;
-}
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
 
-.cat-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
+    .label {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
 
-.cat-desc {
-  font-size: 0.95rem;
-  line-height: 1.6;
-  color: var(--text-desc);
-}
+    .label .ph {
+      color: var(--accent-text);
+      font-size: 1.05rem;
+    }
 
-/* Actions */
-.cat-actions {
-  padding: 0 1.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
+    h1 {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 800;
+      font-stretch: 108%;
+      font-size: clamp(1.9rem, 6vw, 2.6rem);
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
 
-.cat-actions a {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-  padding: 0.85rem 1rem;
-  border-radius: 14px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: #fff;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-}
+    .cat-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+    }
 
-.cat-actions a:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 26px rgba(0,0,0,0.3);
-}
+    .cat-media img {
+      width: 100%;
+      display: block;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
 
-.cat-actions img {
-  height: 1.25rem;
-}
+    .cat-body {
+      padding: 1.4rem 1.5rem 0.25rem;
+      text-align: center;
+    }
 
-/* Brand Colors */
-.donate-paypal { background: linear-gradient(90deg, #003087, #009cde); }
-.donate-wise { background: linear-gradient(90deg, #00AFF0, #00D0FF); }
+    .cat-name {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.45rem;
+    }
 
-/* Mobile tuning */
-@media (max-width: 480px) {
-  .cat-header,
-  .cat-body,
-  .cat-actions,
-  .cat-media { padding-left:1.25rem; padding-right:1.25rem; }
+    .cat-desc {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--muted);
+    }
 
-  .cat-header h1 { font-size:1.45rem; }
-}
-</style>
+    .cat-actions {
+      padding: 1.4rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .cat-actions a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.95rem 1rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cat-actions a:hover {
+      transform: translateY(-2px);
+    }
+
+    .cat-actions a:active {
+      transform: translateY(0) scale(0.99);
+    }
+
+    .cat-actions svg {
+      height: 1.2rem;
+      width: auto;
+      display: block;
+    }
+
+    .brand-icon {
+      display: grid;
+      place-items: center;
+    }
+
+    /* Brand solids, no gradients */
+    .donate-paypal {
+      background: #0070BA;
+      color: #fff;
+    }
+
+    .donate-wise {
+      background: #9FE870;
+      color: #163300;
+    }
+
+    .back {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.8rem 1.6rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--fg);
+      box-shadow: inset 0 0 0 1px var(--border);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .back:hover {
+      transform: scale(1.03);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cat-actions a,
+      .back {
+        transition: none;
+      }
+    }
+  </style>
 </head>
 
-<body class="cat-page">
+<body>
 
-<div class="cat-card">
+  <!-- Follow the theme chosen on the links page -->
+  <script>
+    (function () {
+      var saved = localStorage.getItem('theme');
+      var light = saved ? saved === 'light' : !window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (light) {
+        document.body.classList.add('light');
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', '#f2f1ec');
+      }
+    })();
+  </script>
 
-  <div class="cat-header">
-    <h1>Meet Our Beloved Cats 🐱</h1>
+  <p class="label"><i class="ph ph-paw-print" aria-hidden="true"></i> Friends of the site</p>
+  <h1>Meet Our Beloved Cats &#128049;</h1>
+
+  <div class="cat-card">
+    <div class="cat-media">
+      <img src="assets/images/curiosity.jpg" alt="Curiosity and Ming Ming">
+    </div>
+
+    <div class="cat-body">
+      <div class="cat-name">Curiosity &amp; Ming Ming</div>
+      <p class="cat-desc">Help us feed our beloved cats! Any support is appreciated &#10084;&#65039;</p>
+    </div>
+
+    <div class="cat-actions">
+      <a href="https://www.paypal.me/geanpaulo" target="_blank" rel="noopener" class="donate-paypal">
+        <span class="brand-icon" data-icon="paypal"></span>
+        Donate via PayPal
+      </a>
+      <a href="https://wise.com/pay/me/geanpaulop" target="_blank" rel="noopener" class="donate-wise">
+        <span class="brand-icon" data-icon="wise"></span>
+        Donate via Wise
+      </a>
+    </div>
   </div>
 
-  <div class="cat-media">
-    <a href="cat.html">
-      <img src="assets/images/curiosity.jpg" alt="Curiosity & Ming Ming">
-    </a>
-  </div>
+  <a class="back" href="/"><i class="ph ph-arrow-left" aria-hidden="true"></i> Back to links</a>
 
-  <div class="cat-body">
-    <div class="cat-name">Curiosity & Ming Ming</div>
-    <p class="cat-desc">
-      Help us feed our beloved cats! Any support is appreciated ❤️
-    </p>
-  </div>
-
-  <div class="cat-actions">
-    <a href="https://www.paypal.me/geanpaulo" target="_blank" class="donate-paypal">
-      <img src="assets/icons/paypal.svg" alt=""> Donate via PayPal
-    </a>
-    <a href="https://wise.com/pay/me/geanpaulop" target="_blank" class="donate-wise">
-      <img src="assets/icons/wise.svg" alt=""> Donate via Wise
-    </a>
-  </div>
-
-</div>
-
-<script>
-// =========================
-// THEME DETECTION & PERSISTENCE
-// =========================
-
-// Immediately apply saved theme before anything renders
-(function(){
-  const savedTheme = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  if(savedTheme === "light"){
-    document.body.classList.add("light");
-    document.body.classList.remove("dark");
-  } else if(savedTheme === "dark"){
-    document.body.classList.add("dark");
-    document.body.classList.remove("light");
-  } else {
-    if(prefersDark){
-      document.body.classList.add("dark");
-      document.body.classList.remove("light");
-    } else {
-      document.body.classList.add("light");
-      document.body.classList.remove("dark");
-    }
-  }
-})();
-
-// Optional: theme toggle button for testing
-// Save theme so it persists across pages
-function toggleTheme(){
-  if(document.body.classList.contains("light")){
-    document.body.classList.remove("light");
-    document.body.classList.add("dark");
-    localStorage.setItem("theme","dark");
-  } else {
-    document.body.classList.remove("dark");
-    document.body.classList.add("light");
-    localStorage.setItem("theme","light");
-  }
-}
-</script>
-
+  <script>
+    // Inline the brand marks so they inherit the button colors.
+    document.querySelectorAll('.brand-icon').forEach((slot) => {
+      const name = slot.dataset.icon;
+      fetch(`assets/icons/${name}.svg`)
+        .then((r) => r.text())
+        .then((svg) => {
+          if (!/<svg[^>]*fill=/.test(svg)) {
+            svg = svg.replace(/<svg /, `<svg fill="${name === 'wise' ? '#163300' : '#fff'}" `);
+          }
+          slot.innerHTML = svg.replace(/<svg /, '<svg height="20" ');
+        })
+        .catch(() => slot.remove());
+    });
+  </script>
 </body>
 </html>

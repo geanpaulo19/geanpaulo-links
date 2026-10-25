@@ -1,48 +1,45 @@
-# 🌐 Personal Link Hub / Portfolio
+# Gean Paulo | Links
 
-A clean, minimal, and battery-friendly personal link hub that showcases my portfolio, social links, and featured projects — with light/dark mode support and subtle UI polish.
+Personal link hub at **links.geanpaulo.com**, designed in the same Kinetic Type
+system as [geanpaulo.com](https://geanpaulo.com): Archivo display type, lime
+accent, choreographed entrances.
 
-## ✨ Features
+## Features
 
-- 🎨 **Light & Dark Mode**
-  - Respects system preference
-  - Persists theme using `localStorage`
-- 🖼️ **Inline SVG Icons**
-  - Brand-colored icons
-  - Portfolio icon adapts automatically (white on dark, black on light)
-- ⭐ **Featured Project Card**
-  - Highlight important work (e.g. Chrome extension)
-- 📊 **Optional Stats**
-  - Display follower counts or metrics per link
-- 🔋 **Battery-Friendly Design**
-  - Static background glow (no heavy animations)
-- 🕒 **Dynamic Greeting**
-  - Changes based on time of day
+- **Light & Dark Mode**
+  - Dark by default, respects system preference
+  - Toggle persists via `localStorage`; cat and 404 pages follow the choice
+- **Live status row**
+  - Time-aware greeting, availability dot, live Manila clock, and Manila
+    weather via Open-Meteo (keyless, fails silently)
+- **Featured project panel**
+  - Highlighted card for the current featured work
+- **Spotlight link rows**
+  - Border ring that lights up around the cursor, lift-on-hover motion
+- **Cat page** (`cat.html`)
+  - Meet Curiosity & Ming Ming, with PayPal / Wise support buttons
 
----
+## Tech Stack
 
-## 🛠️ Tech Stack
-
-- **HTML**
-- **CSS**
-- **Vanilla JavaScript**
-- **Inline SVGs**
+- HTML
+- CSS
+- Vanilla JavaScript
 
 No frameworks. No build step. Fast and lightweight.
 
----
-
-## 📂 Project Structure
+## Project Structure
 
 ```txt
 .
 ├── assets/
-│   └── icons/
-│       ├── portfolio.svg
-│       ├── github.svg
-│       ├── instagram.svg
-│       └── ...
-├── index.html
+│   ├── icons/          # brand SVG marks for each link
+│   └── images/         # avatar, cats, OG image, favicon
+├── index.html          # links page
+├── cat.html            # the cats
+├── 404.html            # not-found page
 ├── style.css
-├── script.js
-└── README.md
+├── app.js
+├── CNAME               # links.geanpaulo.com
+├── sitemap.xml
+└── robots.txt
+```
