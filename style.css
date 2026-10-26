@@ -167,6 +167,38 @@ img {
 }
 
 /* ============================================================
+   COVER - profile banner melting into the page bg
+   ============================================================ */
+
+.cover {
+  position: relative;
+  height: clamp(180px, 30vh, 280px);
+  overflow: hidden;
+}
+
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* The melt: transparent over the photo, page bg by the bottom
+   edge so the banner and the page are one continuous surface. */
+.cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 40%,
+    var(--bg) 100%
+  );
+  transition: background 0.3s ease;
+}
+
+/* ============================================================
    PAGE CONTAINER
    ============================================================ */
 
@@ -178,16 +210,19 @@ img {
 }
 
 /* ============================================================
-   IDENTITY - avatar + greeting + name + bio + live status
+   IDENTITY - avatar overlapping the cover, name + bio below
    ============================================================ */
 
 .identity {
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  padding: clamp(2.75rem, 8vh, 4.25rem) 0 2.25rem;
+  margin-top: -48px;
+  padding: 0 0 2.25rem;
   border-bottom: 1px solid var(--border);
   text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
 .avatar {
@@ -196,6 +231,8 @@ img {
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border);
+  /* Cutout ring: separates the avatar from the photo behind it */
+  box-shadow: 0 0 0 5px var(--bg);
   flex-shrink: 0;
 }
 
