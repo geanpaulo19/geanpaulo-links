@@ -189,6 +189,7 @@ img {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 2;
   background: linear-gradient(
     to bottom,
     transparent 0%,
@@ -196,6 +197,78 @@ img {
     var(--bg) 100%
   );
   transition: background 0.3s ease;
+}
+
+/* Light mode: a steeper, warmer ramp so the dark photo fades
+   into the cream without the muddy gray band. */
+body.light .cover::after {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    color-mix(in srgb, var(--bg) 55%, transparent) 62%,
+    var(--bg) 88%
+  );
+}
+
+body.light .cover-img {
+  filter: brightness(1.06) saturate(0.92);
+}
+
+/* ============================================================
+   COVER MOTION - entrance fade + scroll-driven push-in.
+   The push-in uses CSS scroll-driven animation (no scroll
+   listeners); browsers without it just get the static photo.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cover {
+    animation: cover-in 0.9s ease-out both;
+  }
+}
+
+@keyframes cover-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .cover-img {
+      animation: cover-push linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px 600px;
+    }
+
+    /* A bg-colored veil deepens the melt as the cover scrolls away */
+    .cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: var(--bg);
+      opacity: 0;
+      pointer-events: none;
+      animation: cover-veil linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px 600px;
+    }
+  }
+}
+
+@keyframes cover-push {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.14);
+  }
+}
+
+@keyframes cover-veil {
+  to {
+    opacity: 0.45;
+  }
 }
 
 /* ============================================================
@@ -314,6 +387,98 @@ img {
 .tabular {
   font-variant-numeric: tabular-nums;
   color: var(--fg);
+}
+
+/* ============================================================
+   SHARE BUTTON - compact ghost pill under the status line
+   ============================================================ */
+
+.share-row {
+  margin-top: 0.35rem;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.share-btn .ph {
+  font-size: 0.95rem;
+  color: var(--accent-text);
+}
+
+.share-btn:hover {
+  border-color: color-mix(in srgb, var(--fg) 35%, transparent);
+}
+
+.share-btn:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   COVER CHIP - wordmark tag over the photo
+   ============================================================ */
+
+.cover-chip {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  backdrop-filter: blur(12px) saturate(150%);
+  text-decoration: none;
+  transition: border-color 0.3s ease;
+}
+
+.cover-chip:hover {
+  border-color: color-mix(in srgb, var(--fg) 35%, transparent);
+}
+
+.chip-name {
+  font-family: 'Archivo', sans-serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+.chip-name sup {
+  font-size: 0.55em;
+}
+
+.chip-sep {
+  width: 1px;
+  height: 0.85em;
+  background: var(--border);
+}
+
+.chip-tag {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: color-mix(in srgb, var(--fg) 75%, transparent);
 }
 
 /* ============================================================
@@ -494,6 +659,37 @@ body.light .featured-card:hover {
     transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.3s ease,
     background-color 0.3s ease;
+}
+
+/* Directional fill: sweeps in from the side the cursor enters.
+   Animated with clip-path (not transform) so the fill can only
+   ever paint inside the pill - no soft edges past the border.
+   JS toggles .fill-right for the entry direction. */
+.link-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: color-mix(in srgb, var(--fg) 6%, transparent);
+  clip-path: inset(0 100% 0 0 round 999px);
+  transition: clip-path 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+/* Entered from the right: hidden state clips the left side instead */
+.link-row.fill-right::before {
+  clip-path: inset(0 0 0 100% round 999px);
+}
+
+.link-row:hover::before,
+.link-row:focus-visible::before {
+  clip-path: inset(0 0 0 0 round 999px);
+}
+
+.link-row > * {
+  position: relative;
+  z-index: 1;
 }
 
 .link-row:hover {
@@ -720,7 +916,10 @@ body.light .featured-card:hover {
   }
 
   .link-row,
+  .link-row::before,
   .featured-card,
+  .share-btn,
+  .cover-chip,
   .cat-link img,
   .link-arrow,
   .featured-arrow,

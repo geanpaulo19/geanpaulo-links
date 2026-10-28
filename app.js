@@ -176,6 +176,15 @@ linkData.forEach((link, i) => {
   row.className = 'link-row spotlight reveal';
   row.style.setProperty('--rd', `${(i % 3) * 80}ms`);
 
+  // Directional fill: the hover sweep enters from the side the
+  // cursor enters, and retreats toward the side it leaves.
+  const setFillSide = (e) => {
+    const r = row.getBoundingClientRect();
+    row.classList.toggle('fill-right', e.clientX >= r.left + r.width / 2);
+  };
+  row.addEventListener('mouseenter', setFillSide);
+  row.addEventListener('mouseleave', setFillSide);
+
   const arrow = link.arrow || 'ph-arrow-up-right';
   renderIcon(link, 30).then((icon) => {
     row.innerHTML = `
@@ -213,6 +222,30 @@ document.getElementById('availability').textContent = AVAILABILITY.open
   ? AVAILABILITY.available
   : AVAILABILITY.booked;
 document.querySelector('.status-dot').classList.toggle('booked', !AVAILABILITY.open);
+
+// ==========================
+// SHARE - native sheet on mobile, copy + toast on desktop
+// ==========================
+const shareBtn = document.getElementById('share-btn');
+
+if (shareBtn) {
+  shareBtn.addEventListener('click', () => {
+    const shareData = {
+      title: 'Gean Paulo | Links',
+      text: "Gean Paulo's links: portfolio, socials, and the best ways to get in touch.",
+      url: 'https://links.geanpaulo.com/'
+    };
+    if (navigator.share) {
+      navigator.share(shareData).catch(() => {
+        /* user dismissed the sheet */
+      });
+    } else {
+      copyText(shareData.url)
+        .then(() => showToast('Link copied to clipboard'))
+        .catch(() => showToast(shareData.url));
+    }
+  });
+}
 
 // ==========================
 // GREETING - visitor's local time, like the portfolio hero
